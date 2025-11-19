@@ -1,40 +1,52 @@
-<.header>
-  Apps
-  <:actions>
-    <.link patch={~p"/apps/new"}>
-      <.button>New App</.button>
-    </.link>
-  </:actions>
-</.header>
+<div class="mb-8">
+  <h1 class="text-3xl font-semibold text-slate-100 tracking-tight mb-2">Observed Phoenix Apps</h1>
+  <p class="text-slate-400 text-sm">Each app streams its flights into PhireFlight.</p>
+</div>
 
-<.table
-  id="apps"
-  rows={@streams.apps}
-  row_click={fn {_id, app} -> JS.navigate(~p"/apps/#{app.id}") end}
->
-  <:col :let={{_id, app}} label="Name"><%= app.name %></:col>
-  <:col :let={{_id, app}} label="Slug"><%= app.slug %></:col>
-  <:col :let={{_id, app}} label="Description">
-    <%= if app.description, do: String.slice(app.description, 0..50), else: "-" %>
-  </:col>
-  <:col :let={{_id, app}} label="Status">
-    <%= if app.active, do: "Active", else: "Inactive" %>
-  </:col>
-  <:action :let={{_id, app}}>
-    <.link navigate={~p"/apps/#{app.id}"}>View</.link>
-  </:action>
-  <:action :let={{_id, app}}>
-    <.link patch={~p"/apps/#{app.id}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={{id, app}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: app.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+  <%= for {_id, app} <- @streams.apps do %>
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-xl font-semibold text-slate-100 mb-1"><%= app.name %></h3>
+          <p class="text-sm text-slate-400 font-mono"><%= app.slug %></p>
+        </div>
+      </div>
+      <%= if app.description do %>
+        <p class="text-sm text-slate-300 mb-4 line-clamp-2"><%= app.description %></p>
+      <% end %>
+      <div class="flex items-center gap-4 text-xs text-slate-400 mb-4">
+        <span><%= length(PhireFlight.Contexts.list_app_contexts(app.id)) %> contexts</span>
+        <span>•</span>
+        <span><%= PhireFlight.Traces.get_trace_stats(app.id).total_count %> flights</span>
+      </div>
+      <div class="flex gap-2">
+        <.link navigate={~p"/apps/#{app.id}"} class="flex-1 text-center rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-600 transition-colors">
+          View Flights
+        </.link>
+        <.link patch={~p"/apps/#{app.id}/edit"} class="px-3 py-2 text-sm text-slate-300 hover:text-slate-100">
+          Edit
+        </.link>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= if Enum.empty?(@streams.apps) do %>
+  <div class="text-center py-16">
+    <p class="text-slate-400 mb-4">No apps registered yet.</p>
+    <div class="flex gap-4 justify-center">
+      <.link patch={~p"/apps/new"} class="inline-flex items-center rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-orange-600">
+        Create Your First App
+      </.link>
+      <%= if assigns[:demo_mode] do %>
+        <.link navigate={~p"/demo/guide"} class="inline-flex items-center rounded-md bg-slate-800 border border-slate-700 px-3.5 py-2.5 text-sm font-semibold text-slate-200 hover:bg-slate-700">
+          Try Demo Mode
+        </.link>
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
 <.modal :if={@live_action in [:new, :edit]} id="app-modal" show on_cancel={JS.patch(~p"/apps")}>
   <.live_component

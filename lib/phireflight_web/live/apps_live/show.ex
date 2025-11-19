@@ -2,6 +2,7 @@ defmodule PhireFlightWeb.AppsLive.Show do
   use PhireFlightWeb, :live_view
 
   alias PhireFlight.{Apps, Contexts, Traces}
+  import PhireFlightWeb.Components.StatusBadge
   alias PhireFlight.Repo
 
   @impl true

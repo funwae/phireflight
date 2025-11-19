@@ -10,10 +10,10 @@ defmodule PhireFlightWeb.Components.StatusBadge do
     ~H"""
     <span class={[
       "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-      @status == :ok && "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
-      @status == :error && "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
-      @status == :timeout && "bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100",
-      @status == :cancelled && "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"
+      @status == :ok && "bg-green-500/20 text-green-400 border border-green-500/30",
+      @status == :error && "bg-red-500/20 text-red-400 border border-red-500/30",
+      @status == :timeout && "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+      @status == :cancelled && "bg-slate-700 text-slate-300 border border-slate-600"
     ]}>
       <%= String.capitalize(to_string(@status)) %>
     </span>

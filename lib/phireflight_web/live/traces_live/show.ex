@@ -2,6 +2,7 @@ defmodule PhireFlightWeb.TracesLive.Show do
   use PhireFlightWeb, :live_view
 
   alias PhireFlight.{Traces, TraceEvents, Narrations, Apps}
+  import PhireFlightWeb.Components.StatusBadge
 
   @impl true
   def mount(_params, _session, socket) do
@@ -17,12 +18,16 @@ defmodule PhireFlightWeb.TracesLive.Show do
     transitions = TraceEvents.get_context_transitions(trace_id)
     narration = Narrations.get_narration_by_trace_id(trace_id)
 
+    # Calculate time offsets for each event
+    time_offsets = calculate_time_offsets(events)
+
     {:noreply,
      socket
      |> assign(:page_title, "Flight: #{trace.entry_point}")
      |> assign(:app, app)
      |> assign(:trace, trace)
      |> assign(:events, events)
+     |> assign(:time_offsets, time_offsets)
      |> assign(:context_flow, context_flow)
      |> assign(:transitions, transitions)
      |> assign(:narration, narration)
@@ -30,6 +35,16 @@ defmodule PhireFlightWeb.TracesLive.Show do
      |> assign(:playing, false)
      |> assign(:current_event_index, 0)
      |> assign(:generating_narration, false)}
+  end
+
+  defp calculate_time_offsets(events) do
+    events
+    |> Enum.with_index()
+    |> Enum.map(fn {_event, index} ->
+      events
+      |> Enum.take(index + 1)
+      |> Enum.reduce(0, fn event, acc -> acc + (event.duration_ms || 0) end)
+    end)
   end
 
   @impl true

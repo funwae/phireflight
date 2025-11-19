@@ -1,0 +1,57 @@
+<div class="max-w-4xl mx-auto">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-8">
+    <h2 class="text-2xl font-semibold text-slate-100 tracking-tight mb-6">Step 2: Trigger a Flight</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Left: DemoShop Link -->
+      <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-slate-100 mb-3">DemoShop</h3>
+        <p class="text-slate-400 text-sm mb-4">
+          In the other tab/window, perform a checkout. When you're done, come back here and click "I've completed a checkout".
+        </p>
+        <div class="space-y-2 mb-4">
+          <div class="flex items-center gap-2 text-sm text-slate-300">
+            <span class="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-xs">1</span>
+            <span>Browse products</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-300">
+            <span class="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-xs">2</span>
+            <span>Add items to cart</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-300">
+            <span class="w-5 h-5 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-xs">3</span>
+            <span>Complete checkout</span>
+          </div>
+        </div>
+        <.link navigate={~p"/demo/products"} target="_blank" class="inline-flex items-center rounded-md bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">
+          Open DemoShop →
+        </.link>
+      </div>
+
+      <!-- Right: Checklist -->
+      <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-slate-100 mb-4">Checklist</h3>
+        <div class="space-y-3">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-600 text-orange-500 focus:ring-orange-500" />
+            <span class="text-slate-300">Added item to cart</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-600 text-orange-500 focus:ring-orange-500" />
+            <span class="text-slate-300">Completed checkout</span>
+          </label>
+        </div>
+        <div class="mt-6">
+          <.button
+            phx-click="check_for_flight"
+            disabled={@polling}
+            class="w-full bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50"
+          >
+            <%= if @polling, do: "Checking for flight...", else: "I've completed a checkout" %>
+          </.button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,20 @@
+<div class="max-w-2xl mx-auto">
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-8">
+    <h1 class="text-3xl font-semibold text-slate-100 tracking-tight mb-4">Welcome to PhireFlight</h1>
+    <p class="text-slate-300 text-lg leading-relaxed mb-6">
+      PhireFlight is a flight recorder for Phoenix contexts. Every request becomes a visual 'flight' you can replay as a diagram and a story.
+    </p>
+    <p class="text-slate-400 text-sm leading-relaxed mb-8">
+      You know how Phoenix contexts are supposed to be the architectural backbone — but once AI and junior devs start pushing code, it's hard to see if the app still follows your context boundaries? PhireFlight records those contexts at runtime and lets an AI narrate what's actually happening.
+    </p>
+    <div class="flex gap-4">
+      <.button phx-click="next_step" phx-value-step="2" class="bg-orange-500 hover:bg-orange-600 text-white">
+        Run Happy Path Demo
+      </.button>
+      <.button phx-click="skip_to_flights" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">
+        Skip to Flights
+      </.button>
+    </div>
+  </div>
+</div>
+

@@ -51,6 +51,9 @@ config :phoenix, :json_library, Jason
 # Configure LLM Client - can be :claude, :openai, or :mock
 config :phireflight, :llm_client, PhireFlight.LLMClient.Mock
 
+# Enable Demo Mode for guided tour
+config :phireflight, :demo_mode, true
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

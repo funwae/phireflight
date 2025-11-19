@@ -1,11 +1,12 @@
-<.header>
-  Traces for <%= @app.name %>
-  <:actions>
-    <.link navigate={~p"/apps/#{@app.id}"}>
-      <.button>Back to App</.button>
+<div class="mb-8">
+  <div class="flex items-center justify-between mb-2">
+    <h1 class="text-3xl font-semibold text-slate-100 tracking-tight">Flights</h1>
+    <.link navigate={~p"/apps/#{@app.id}"} class="text-sm text-slate-400 hover:text-slate-300">
+      ← Back to App
     </.link>
-  </:actions>
-</.header>
+  </div>
+  <p class="text-slate-400 text-sm">Every request through your app creates a flight you can replay.</p>
+</div>
 
 <!-- Filter -->
 <div class="mb-4">
@@ -22,33 +23,52 @@
         "Cancelled": "cancelled"
       ]}
       label="Filter by Status"
+      class="bg-slate-900 border-slate-800 text-slate-100"
     />
   </.simple_form>
 </div>
 
-<.table id="traces" rows={@traces}>
-  <:col :let={trace} label="Entry Point"><%= trace.entry_point %></:col>
-  <:col :let={trace} label="Status">
-    <.status_badge status={trace.status} />
-  </:col>
-  <:col :let={trace} label="Duration"><%= trace.duration_ms || 0 %>ms</:col>
-  <:col :let={trace} label="Started">
-    <%= if trace.started_at do %>
-      <%= Calendar.strftime(trace.started_at, "%Y-%m-%d %H:%M:%S") %>
-    <% else %>
-      -
-    <% end %>
-  </:col>
-  <:action :let={trace}>
-    <.link navigate={~p"/apps/#{@app.id}/traces/#{trace.id}"}>
-      View Flight →
-    </.link>
-  </:action>
-</.table>
+<div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+  <table class="w-full">
+    <thead class="bg-slate-800 border-b border-slate-700">
+      <tr>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Entry Point</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Duration</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Flight Time</th>
+        <th class="px-4 py-3 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">Action</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-800">
+      <%= for trace <- @traces do %>
+        <tr class="hover:bg-slate-800/50 transition-colors">
+          <td class="px-4 py-3 text-sm font-mono text-slate-300"><%= trace.entry_point %></td>
+          <td class="px-4 py-3">
+            <.status_badge status={trace.status} />
+          </td>
+          <td class="px-4 py-3 text-sm text-slate-400"><%= trace.duration_ms || 0 %>ms</td>
+          <td class="px-4 py-3 text-sm text-slate-400">
+            <%= if trace.started_at do %>
+              <%= Calendar.strftime(trace.started_at, "%Y-%m-%d %H:%M:%S") %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td class="px-4 py-3 text-right">
+            <.link navigate={~p"/apps/#{@app.id}/traces/#{trace.id}"} class="text-orange-400 hover:text-orange-300 text-sm font-medium">
+              View Flight →
+            </.link>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <%= if length(@traces) == 0 do %>
-  <div class="text-center text-gray-500 dark:text-gray-400 py-8">
-    No traces found. Traces will appear here once your app starts sending them.
+  <div class="text-center py-16">
+    <p class="text-slate-400 mb-2">No flights found.</p>
+    <p class="text-slate-500 text-sm">Flights will appear here once your app starts sending them.</p>
   </div>
 <% end %>
 

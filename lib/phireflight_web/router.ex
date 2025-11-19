@@ -14,6 +14,16 @@ defmodule PhireFlightWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :demo do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {PhireFlightWeb.Layouts, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug(PhireFlight.Instrumentation.Plug, app_slug: "demo-shop")
+  end
+
   # Public routes
   scope "/", PhireFlightWeb do
     pipe_through :browser
@@ -24,8 +34,7 @@ defmodule PhireFlightWeb.Router do
   # DemoShop routes (Phase 5 - Demo Application)
   # Add instrumentation plug to trace all DemoShop requests
   scope "/demo", DemoShopWeb do
-    pipe_through :browser
-    plug PhireFlight.Instrumentation.Plug, app_slug: "demo-shop"
+    pipe_through :demo
 
     get "/products", ProductController, :index
     get "/products/:id", ProductController, :show
@@ -33,6 +42,15 @@ defmodule PhireFlightWeb.Router do
     get "/checkout", CheckoutController, :show
     post "/checkout", CheckoutController, :create
     get "/orders/:id", OrderController, :show
+  end
+
+  # Demo Mode / Guided Tour (Phase 4)
+  if Application.compile_env(:phireflight, :demo_mode, false) do
+    scope "/demo", PhireFlightWeb do
+      pipe_through :browser
+
+      live "/guide", DemoGuideLive, :index
+    end
   end
 
   # API routes for trace ingestion

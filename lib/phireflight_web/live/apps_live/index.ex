@@ -7,7 +7,8 @@ defmodule PhireFlightWeb.AppsLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     # For now, we'll list all apps. Later we'll filter by current_user
-    {:ok, stream(socket, :apps, Apps.list_all_apps())}
+    demo_mode = Application.get_env(:phireflight, :demo_mode, false)
+    {:ok, assign(socket, :demo_mode, demo_mode) |> stream(:apps, Apps.list_all_apps())}
   end
 
   @impl true

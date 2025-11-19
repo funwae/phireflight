@@ -2,6 +2,7 @@ defmodule PhireFlightWeb.TracesLive.Index do
   use PhireFlightWeb, :live_view
 
   alias PhireFlight.{Traces, Apps}
+  import PhireFlightWeb.Components.StatusBadge
 
   @impl true
   def mount(_params, _session, socket) do
@@ -23,7 +24,7 @@ defmodule PhireFlightWeb.TracesLive.Index do
 
     {:noreply,
      socket
-     |> assign(:page_title, "Traces - #{app.name}")
+     |> assign(:page_title, "Flights - #{app.name}")
      |> assign(:app, app)
      |> assign(:traces, traces)
      |> assign(:status_filter, status_filter || "")}

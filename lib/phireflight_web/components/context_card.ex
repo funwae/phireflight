@@ -9,18 +9,22 @@ defmodule PhireFlightWeb.Components.ContextCard do
   def context_card(assigns) do
     ~H"""
     <div
-      class="p-4 rounded-lg border-2 hover:shadow-lg transition-shadow bg-white dark:bg-gray-800"
+      class="p-4 rounded-lg border-2 hover:border-slate-700 transition-colors bg-slate-900 border-slate-800"
       style={@context.color && "border-color: #{@context.color}"}
+      title={@context.description || @context.full_name}
     >
       <div class="flex items-start justify-between mb-2">
-        <h3 class="font-semibold text-lg"><%= @context.name %></h3>
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full" style={"background-color: #{@context.color || '#3B82F6'}"}></div>
+          <h3 class="font-semibold text-lg text-slate-100"><%= @context.name %></h3>
+        </div>
         <.kind_badge kind={@context.kind} />
       </div>
       <%= if @context.description do %>
-        <p class="text-sm text-gray-600 dark:text-gray-400"><%= @context.description %></p>
+        <p class="text-sm text-slate-400"><%= @context.description %></p>
       <% end %>
       <%= if @context.full_name do %>
-        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1 font-mono"><%= @context.full_name %></p>
+        <p class="text-xs text-slate-500 mt-1 font-mono"><%= @context.full_name %></p>
       <% end %>
     </div>
     """
@@ -30,10 +34,10 @@ defmodule PhireFlightWeb.Components.ContextCard do
     ~H"""
     <span class={[
       "text-xs px-2 py-1 rounded",
-      @kind == :domain && "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
-      @kind == :integration && "bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100",
-      @kind == :ui && "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
-      @kind == :infra && "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"
+      @kind == :domain && "bg-blue-500/20 text-blue-400 border border-blue-500/30",
+      @kind == :integration && "bg-purple-500/20 text-purple-400 border border-purple-500/30",
+      @kind == :ui && "bg-green-500/20 text-green-400 border border-green-500/30",
+      @kind == :infra && "bg-slate-700 text-slate-300 border border-slate-600"
     ]}>
       <%= String.capitalize(to_string(@kind)) %>
     </span>
