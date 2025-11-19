@@ -1,0 +1,50 @@
+<div class="px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-4xl">
+    <.link navigate={~p"/demo/products"} class="text-blue-600 hover:text-blue-800 mb-4 inline-block">
+      ← Back to Products
+    </.link>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
+      <h1 class="text-3xl font-bold mb-2">Order <%= @order.order_number %></h1>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">
+        Status: <.status_badge status={@order.status} />
+      </p>
+
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-4">Order Items</h2>
+        <div class="space-y-2">
+          <%= for item <- @order.line_items do %>
+            <div class="flex justify-between border-b pb-2">
+              <div>
+                <span class="font-semibold"><%= item.product_name %></span>
+                <span class="text-sm text-gray-500 ml-2">x<%= item.quantity %></span>
+              </div>
+              <span>$<%= :erlang.float_to_binary(item.quantity * item.price_cents / 100, decimals: 2) %></span>
+            </div>
+          <% end %>
+        </div>
+        <div class="mt-4 pt-4 border-t flex justify-between text-xl font-bold">
+          <span>Total:</span>
+          <span>$<%= :erlang.float_to_binary(@order.total_cents / 100, decimals: 2) %></span>
+        </div>
+      </div>
+
+      <%= if @order.payment do %>
+        <div class="mt-6 pt-6 border-t">
+          <h2 class="text-xl font-semibold mb-2">Payment</h2>
+          <p class="text-gray-600 dark:text-gray-400">
+            Method: <%= @order.payment.payment_method %> •
+            Status: <.status_badge status={@order.payment.status} />
+          </p>
+        </div>
+      <% end %>
+
+      <div class="mt-6">
+        <.link navigate={~p"/apps/demo-shop/traces"} class="text-blue-600 hover:text-blue-800">
+          View this order's trace in PhireFlight →
+        </.link>
+      </div>
+    </div>
+  </div>
+</div>
+

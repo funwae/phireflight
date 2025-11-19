@@ -1,0 +1,26 @@
+<div class="px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-4xl">
+    <.link navigate={~p"/demo/products"} class="text-blue-600 hover:text-blue-800 mb-4 inline-block">
+      ← Back to Products
+    </.link>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
+      <h1 class="text-4xl font-bold mb-4"><%= @product.name %></h1>
+      <p class="text-gray-600 dark:text-gray-400 mb-6"><%= @product.description %></p>
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-4xl font-bold">$<%= :erlang.float_to_binary(@product.price_cents / 100, decimals: 2) %></span>
+        <span class="text-sm text-gray-500">Stock: <%= @product.stock_quantity %></span>
+      </div>
+      <form action={~p"/demo/cart/add"} method="post">
+        <input type="hidden" name="product_id" value={@product.id} />
+        <div class="flex gap-4">
+          <input type="number" name="quantity" value="1" min="1" max={@product.stock_quantity} class="rounded-md border border-gray-300 px-3 py-2 w-20" />
+          <button type="submit" class="rounded-md bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+            Add to Cart
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

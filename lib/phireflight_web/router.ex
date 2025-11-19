@@ -21,6 +21,20 @@ defmodule PhireFlightWeb.Router do
     get "/", PageController, :home
   end
 
+  # DemoShop routes (Phase 5 - Demo Application)
+  # Add instrumentation plug to trace all DemoShop requests
+  scope "/demo", DemoShopWeb do
+    pipe_through :browser
+    plug PhireFlight.Instrumentation.Plug, app_slug: "demo-shop"
+
+    get "/products", ProductController, :index
+    get "/products/:id", ProductController, :show
+    post "/cart/add", CartController, :add
+    get "/checkout", CheckoutController, :show
+    post "/checkout", CheckoutController, :create
+    get "/orders/:id", OrderController, :show
+  end
+
   # API routes for trace ingestion
   # Will be implemented in Phase 4 (Instrumentation Client)
   scope "/api", PhireFlightWeb.API do

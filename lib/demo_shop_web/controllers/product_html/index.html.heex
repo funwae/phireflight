@@ -1,0 +1,31 @@
+<div class="px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <h1 class="text-3xl font-bold mb-8">DemoShop Products</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <%= for product <- @products do %>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h3 class="text-xl font-semibold mb-2"><%= product.name %></h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-4"><%= product.description %></p>
+          <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold">$<%= :erlang.float_to_binary(product.price_cents / 100, decimals: 2) %></span>
+            <span class="text-sm text-gray-500">Stock: <%= product.stock_quantity %></span>
+          </div>
+          <div class="mt-4 flex gap-2">
+            <.link navigate={~p"/demo/products/#{product.id}"} class="flex-1 text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+              View
+            </.link>
+            <form action={~p"/demo/cart/add"} method="post" class="flex-1">
+              <input type="hidden" name="product_id" value={product.id} />
+              <input type="hidden" name="quantity" value="1" />
+              <button type="submit" class="w-full rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500">
+                Add to Cart
+              </button>
+            </form>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
