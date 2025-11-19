@@ -28,6 +28,8 @@ Just like a flight recorder captures every detail of an aircraft's journey, Phir
 
 ## Quick Start
 
+> **New to Elixir/Phoenix?** Check out **[GETTING-STARTED.md](GETTING-STARTED.md)** for a beginner-friendly, step-by-step guide with explanations.
+
 ### Prerequisites
 
 - **Elixir** 1.14+ (1.15+ recommended for full compatibility)
@@ -38,6 +40,8 @@ Just like a flight recorder captures every detail of an aircraft's journey, Phir
   ```bash
   sudo apt-get install -y build-essential erlang-dev erlang-parsetools
   ```
+
+**No Docker required!** PhireFlight runs directly on your machine.
 
 ### Installation
 
@@ -60,7 +64,7 @@ Just like a flight recorder captures every detail of an aircraft's journey, Phir
    # Create PostgreSQL databases
    createdb phireflight_dev
    createdb phireflight_test
-
+   
    # Or configure in config/dev.exs and config/test.exs
    mix ecto.setup
    ```
@@ -79,6 +83,8 @@ Just like a flight recorder captures every detail of an aircraft's journey, Phir
    - Main app: [`http://localhost:4000`](http://localhost:4000)
    - Apps dashboard: [`http://localhost:4000/apps`](http://localhost:4000/apps)
    - DemoShop: [`http://localhost:4000/demo/products`](http://localhost:4000/demo/products)
+
+**For detailed setup instructions, troubleshooting, and explanations, see [GETTING-STARTED.md](GETTING-STARTED.md).**
 
 ## Demo Application
 
