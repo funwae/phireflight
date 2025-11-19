@@ -94,7 +94,6 @@ defmodule PhireFlight.Repo.Migrations.CreateDemoShopTables do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:demo_payments, [:order_id])
     create unique_index(:demo_payments, [:order_id])
   end
 end
