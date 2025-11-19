@@ -16,6 +16,8 @@ config :phireflight, PhireFlightWeb.Endpoint,
   pubsub_server: PhireFlight.PubSub,
   live_view: [signing_salt: "phireflight_secret"]
 
+config :phireflight, PhireFlight.Mailer, adapter: Swoosh.Adapters.Local
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
@@ -28,7 +30,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.0",
+  version: "3.4.3",
   phireflight: [
     args: ~w(
       --config=tailwind.config.js

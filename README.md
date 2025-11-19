@@ -1,6 +1,8 @@
 # PhireFlight
 
-PhireFlight is a Phoenix LiveView application for visualizing and analyzing distributed system traces. It provides an intuitive way to understand context boundaries, data flow, and architectural patterns in your applications.
+**AI-Powered Application Context Flow Visualization**
+
+PhireFlight is a Phoenix LiveView application that visualizes and analyzes how context boundaries interact across your application using AI-powered insights.
 
 ## Features
 
@@ -51,13 +53,16 @@ See `docs/design/00-implementation-roadmap.md` for the complete implementation p
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/funwae/phireflight.git
    cd phireflight
    ```
 
 2. Install dependencies:
    ```bash
+   mix local.rebar --force
+   mix local.hex --force
    mix deps.get
+   cd assets && npm install && cd ..
    ```
 
 3. Create and migrate your database:
@@ -65,12 +70,7 @@ See `docs/design/00-implementation-roadmap.md` for the complete implementation p
    mix ecto.setup
    ```
 
-4. Install Node.js dependencies:
-   ```bash
-   cd assets && npm install && cd ..
-   ```
-
-5. Start the Phoenix server:
+4. Start the Phoenix server:
    ```bash
    mix phx.server
    ```
@@ -82,6 +82,15 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ### Database
 
 Configure your database in `config/dev.exs` or set the `DATABASE_URL` environment variable.
+
+Default configuration:
+```elixir
+config :phireflight, PhireFlight.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "phireflight_dev"
+```
 
 ### LLM Provider
 
@@ -105,35 +114,52 @@ Run tests with:
 mix test
 ```
 
-## Documentation
+## Code Formatting
 
-See the `docs/design/` directory for comprehensive design documentation:
-
-- [Implementation Roadmap](docs/design/00-implementation-roadmap.md)
-- [Project Structure](docs/design/01-project-structure.md)
-- [Schemas and Types](docs/design/02-schemas-and-types.md)
-- [Context APIs](docs/design/03-context-apis.md)
-- [LiveView Design](docs/design/04-liveview-design.md)
-- [Instrumentation Client](docs/design/05-instrumentation-client.md)
-- [AI Narration](docs/design/06-ai-narration.md)
-- [DemoShop Example App](docs/design/07-demoshop-example-app.md)
+```bash
+mix format
+```
 
 ## Architecture
 
-PhireFlight uses a context-based architecture following Phoenix best practices:
+### Core Concepts
 
-- **Accounts**: User authentication and management
-- **Apps**: Application registration and API keys
-- **Contexts**: Bounded context definitions
-- **Traces**: Trace lifecycle and metadata
-- **TraceEvents**: Individual events within traces
-- **Visualizations**: Layout management for diagrams
-- **Narrations**: AI-generated trace analysis
+- **Apps**: Registered applications that are being traced
+- **Contexts**: Bounded contexts within an application (e.g., Accounts, Billing, Orders)
+- **Traces**: A single execution flow through multiple contexts
+- **Events**: Individual operations within a trace
+- **Visualizations**: Auto-generated or custom diagram layouts
+- **Narrations**: AI-generated analysis of trace patterns
+
+### Technology Stack
+
+- **Backend**: Elixir + Phoenix Framework
+- **Frontend**: Phoenix LiveView + Tailwind CSS
+- **Database**: PostgreSQL
+- **AI**: Claude API (Anthropic) or OpenAI
+- **Visualization**: D3.js or similar
+
+## Documentation
+
+Comprehensive design documentation is available in the `docs/design/` directory:
+
+- [00-implementation-roadmap.md](docs/design/00-implementation-roadmap.md) - Complete implementation plan
+- [01-project-structure.md](docs/design/01-project-structure.md) - Folder and module layout
+- [02-schemas-and-types.md](docs/design/02-schemas-and-types.md) - Database schema design
+- [03-context-apis.md](docs/design/03-context-apis.md) - Business logic APIs
+- [04-liveview-design.md](docs/design/04-liveview-design.md) - UI components and pages
+- [05-instrumentation-client.md](docs/design/05-instrumentation-client.md) - Tracing library
+- [06-ai-narration.md](docs/design/06-ai-narration.md) - LLM integration
+- [07-demoshop-example-app.md](docs/design/07-demoshop-example-app.md) - Demo application
+
+## Contributing
+
+This project follows the Phoenix framework conventions and Elixir style guide.
 
 ## License
 
 Copyright © 2025
 
-## Contributing
+---
 
-This project is currently in active development. Contribution guidelines will be added once the MVP is complete.
+**Status**: Phase 1 Complete - Ready for Phase 2 (Context APIs)

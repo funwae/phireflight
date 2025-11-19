@@ -85,7 +85,15 @@ defmodule PhireFlightWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {PhireFlightWeb, :count_users, []}
+      {__MODULE__, :dispatch_database_metrics, []}
     ]
+  end
+
+  def dispatch_database_metrics do
+    :telemetry.execute(
+      [:phireflight, :repo, :status],
+      %{},
+      %{repo: PhireFlight.Repo}
+    )
   end
 end

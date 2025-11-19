@@ -15,9 +15,6 @@ defmodule PhireFlightWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: false
 
-  socket "/phoenix/live_reload/socket", Phoenix.LiveReload.Socket
-  plug Phoenix.LiveReload
-
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest

@@ -23,7 +23,7 @@ config :phireflight, PhireFlightWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "phireflight_dev_secret_key_base_at_least_64_characters_long_abcdefgh",
+  secret_key_base: "phireflight_dev_secret_key_base_must_be_at_least_64_bytes_long_for_security",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:phireflight, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:phireflight, ~w(--watch)]}

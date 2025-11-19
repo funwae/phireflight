@@ -22,34 +22,31 @@ defmodule PhireFlightWeb.Router do
   end
 
   # API routes for trace ingestion
-  scope "/api", PhireFlightWeb do
+  # Will be implemented in Phase 4 (Instrumentation Client)
+  scope "/api", PhireFlightWeb.API do
     pipe_through :api
 
-    post "/traces", API.TraceController, :create
-    post "/traces/:id/events", API.EventController, :create
+    # post "/traces", TraceController, :create
+    # post "/events", EventController, :create
   end
 
-  # LiveView routes (will be protected by auth in Phase 0)
-  scope "/", PhireFlightWeb do
-    pipe_through :browser
-
-    live "/apps", AppsLive.Index, :index
-    live "/apps/new", AppsLive.Index, :new
-    live "/apps/:id/edit", AppsLive.Index, :edit
-    live "/apps/:id", AppsLive.Show, :show
-    live "/apps/:id/show/edit", AppsLive.Show, :edit
-
-    live "/apps/:app_id/contexts", ContextsLive.Index, :index
-    live "/apps/:app_id/contexts/new", ContextsLive.Index, :new
-    live "/apps/:app_id/contexts/:id/edit", ContextsLive.Index, :edit
-
-    live "/apps/:app_id/traces", TracesLive.Index, :index
-    live "/apps/:app_id/traces/:id", TracesLive.Show, :show
-
-    live "/apps/:app_id/layouts", LayoutsLive.Index, :index
-    live "/apps/:app_id/layouts/new", LayoutsLive.Index, :new
-    live "/apps/:app_id/layouts/:id/edit", LayoutsLive.Index, :edit
-  end
+  # LiveView routes (will be protected by auth in Phase 3)
+  # Will be implemented in Phase 3 (Basic LiveView UI)
+  # scope "/", PhireFlightWeb do
+  #   pipe_through :browser
+  #
+  #   live "/apps", AppsLive.Index, :index
+  #   live "/apps/new", AppsLive.Index, :new
+  #   live "/apps/:id/edit", AppsLive.Index, :edit
+  #   live "/apps/:id", AppsLive.Show, :show
+  #
+  #   live "/apps/:app_id/contexts", ContextsLive.Index, :index
+  #   live "/apps/:app_id/contexts/new", ContextsLive.Index, :new
+  #   live "/apps/:app_id/contexts/:id/edit", ContextsLive.Index, :edit
+  #
+  #   live "/apps/:app_id/traces", TracesLive.Index, :index
+  #   live "/apps/:app_id/traces/:id", TracesLive.Show, :show
+  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:phireflight, :dev_routes) do

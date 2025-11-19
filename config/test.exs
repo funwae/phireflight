@@ -20,7 +20,7 @@ config :phireflight, PhireFlight.Repo,
 # you can enable the server option below.
 config :phireflight, PhireFlightWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "phireflight_test_secret_key_base_at_least_64_characters_long_abcdefgh",
+  secret_key_base: "phireflight_test_secret_key_base_must_be_at_least_64_bytes_long_for_security",
   server: false
 
 # In test we don't send emails.
@@ -37,3 +37,6 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Use mock LLM client in tests
 config :phireflight, :llm_client, PhireFlight.LLMClient.Mock
+
+config :phoenix_live_view,
+  enable_expensive_runtime_checks: true
