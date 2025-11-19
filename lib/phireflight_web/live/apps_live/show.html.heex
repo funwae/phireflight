@@ -1,0 +1,96 @@
+<.header>
+  <%= @app.name %>
+  <:subtitle><%= @app.description || "No description" %></:subtitle>
+  <:actions>
+    <.link patch={~p"/apps/#{@app.id}/edit"}>
+      <.button>Edit app</.button>
+    </.link>
+    <.link navigate={~p"/apps/#{@app.id}/contexts"}>
+      <.button>Manage Contexts</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 my-8">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Total Traces</div>
+    <div class="text-3xl font-bold"><%= @stats.total_count %></div>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Success Rate</div>
+    <div class="text-3xl font-bold text-green-600">
+      <%= if @stats.total_count > 0 do %>
+        <%= trunc(@stats.ok_count / @stats.total_count * 100) %>%
+      <% else %>
+        --
+      <% end %>
+    </div>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Avg Duration</div>
+    <div class="text-3xl font-bold"><%= @stats.avg_duration_ms || 0 %>ms</div>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Contexts</div>
+    <div class="text-3xl font-bold"><%= length(@contexts) %></div>
+  </div>
+</div>
+
+<!-- Context Map -->
+<.header class="mt-8">
+  Context Map
+  <:actions>
+    <.link navigate={~p"/apps/#{@app.id}/contexts"}>
+      <.button>Manage</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 my-6">
+  <%= for context <- @contexts do %>
+    <.context_card context={context} />
+  <% end %>
+  <%= if length(@contexts) == 0 do %>
+    <div class="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+      No contexts defined yet. <.link navigate={~p"/apps/#{@app.id}/contexts"} class="text-blue-600">Create one</.link>
+    </div>
+  <% end %>
+</div>
+
+<!-- Recent Traces -->
+<.header class="mt-8">
+  Recent Flights
+  <:actions>
+    <.link navigate={~p"/apps/#{@app.id}/traces"}>
+      <.button>View All</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="recent_traces" rows={@recent_traces}>
+  <:col :let={trace} label="Entry Point"><%= trace.entry_point %></:col>
+  <:col :let={trace} label="Status">
+    <.status_badge status={trace.status} />
+  </:col>
+  <:col :let={trace} label="Duration"><%= trace.duration_ms || 0 %>ms</:col>
+  <:col :let={trace} label="Started">
+    <%= if trace.started_at do %>
+      <%= Calendar.strftime(trace.started_at, "%Y-%m-%d %H:%M:%S") %>
+    <% else %>
+      -
+    <% end %>
+  </:col>
+  <:action :let={trace}>
+    <.link navigate={~p"/apps/#{@app.id}/traces/#{trace.id}"}>
+      View Flight →
+    </.link>
+  </:action>
+</.table>
+
+<%= if length(@recent_traces) == 0 do %>
+  <div class="text-center text-gray-500 dark:text-gray-400 py-8">
+    No traces yet. Traces will appear here once your app starts sending them.
+  </div>
+<% end %>
+

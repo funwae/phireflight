@@ -30,23 +30,23 @@ defmodule PhireFlightWeb.Router do
     # post "/events", EventController, :create
   end
 
-  # LiveView routes (will be protected by auth in Phase 3)
-  # Will be implemented in Phase 3 (Basic LiveView UI)
-  # scope "/", PhireFlightWeb do
-  #   pipe_through :browser
-  #
-  #   live "/apps", AppsLive.Index, :index
-  #   live "/apps/new", AppsLive.Index, :new
-  #   live "/apps/:id/edit", AppsLive.Index, :edit
-  #   live "/apps/:id", AppsLive.Show, :show
-  #
-  #   live "/apps/:app_id/contexts", ContextsLive.Index, :index
-  #   live "/apps/:app_id/contexts/new", ContextsLive.Index, :new
-  #   live "/apps/:app_id/contexts/:id/edit", ContextsLive.Index, :edit
-  #
-  #   live "/apps/:app_id/traces", TracesLive.Index, :index
-  #   live "/apps/:app_id/traces/:id", TracesLive.Show, :show
-  # end
+  # LiveView routes (Phase 3 - Basic LiveView UI)
+  # Note: Authentication will be added later
+  scope "/", PhireFlightWeb do
+    pipe_through :browser
+
+    live "/apps", AppsLive.Index, :index
+    live "/apps/new", AppsLive.Index, :new
+    live "/apps/:id/edit", AppsLive.Index, :edit
+    live "/apps/:id", AppsLive.Show, :show
+
+    live "/apps/:app_id/contexts", ContextsLive.Index, :index
+    live "/apps/:app_id/contexts/new", ContextsLive.Index, :new
+    live "/apps/:app_id/contexts/:id/edit", ContextsLive.Index, :edit
+
+    live "/apps/:app_id/traces", TracesLive.Index, :index
+    live "/apps/:app_id/traces/:id", TracesLive.Show, :show
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:phireflight, :dev_routes) do

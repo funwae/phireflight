@@ -1,0 +1,49 @@
+<.header>
+  Apps
+  <:actions>
+    <.link patch={~p"/apps/new"}>
+      <.button>New App</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="apps"
+  rows={@streams.apps}
+  row_click={fn {_id, app} -> JS.navigate(~p"/apps/#{app.id}") end}
+>
+  <:col :let={{_id, app}} label="Name"><%= app.name %></:col>
+  <:col :let={{_id, app}} label="Slug"><%= app.slug %></:col>
+  <:col :let={{_id, app}} label="Description">
+    <%= if app.description, do: String.slice(app.description, 0..50), else: "-" %>
+  </:col>
+  <:col :let={{_id, app}} label="Status">
+    <%= if app.active, do: "Active", else: "Inactive" %>
+  </:col>
+  <:action :let={{_id, app}}>
+    <.link navigate={~p"/apps/#{app.id}"}>View</.link>
+  </:action>
+  <:action :let={{_id, app}}>
+    <.link patch={~p"/apps/#{app.id}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, app}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: app.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="app-modal" show on_cancel={JS.patch(~p"/apps")}>
+  <.live_component
+    module={PhireFlightWeb.AppsLive.FormComponent}
+    id={@app.id || :new}
+    title={@page_title}
+    action={@live_action}
+    app={@app}
+    patch={~p"/apps"}
+  />
+</.modal>
+

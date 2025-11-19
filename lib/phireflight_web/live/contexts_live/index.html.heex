@@ -1,0 +1,57 @@
+<.header>
+  Contexts for <%= @app.name %>
+  <:actions>
+    <.link patch={~p"/apps/#{@app.id}/contexts/new"}>
+      <.button>New Context</.button>
+    </.link>
+    <.link navigate={~p"/apps/#{@app.id}"}>
+      <.button>Back to App</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="contexts"
+  rows={@streams.contexts}
+>
+  <:col :let={{_id, context}} label="Name"><%= context.name %></:col>
+  <:col :let={{_id, context}} label="Full Name"><%= context.full_name || "-" %></:col>
+  <:col :let={{_id, context}} label="Kind">
+    <span class={[
+      "text-xs px-2 py-1 rounded",
+      context.kind == :domain && "bg-blue-100 text-blue-800",
+      context.kind == :integration && "bg-purple-100 text-purple-800",
+      context.kind == :ui && "bg-green-100 text-green-800",
+      context.kind == :infra && "bg-gray-100 text-gray-800"
+    ]}>
+      <%= String.capitalize(to_string(context.kind)) %>
+    </span>
+  </:col>
+  <:col :let={{_id, context}} label="Color">
+    <div class="w-6 h-6 rounded border" style={"background-color: #{context.color || '#3B82F6'}"}></div>
+  </:col>
+  <:action :let={{_id, context}}>
+    <.link patch={~p"/apps/#{@app.id}/contexts/#{context.id}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, context}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: context.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="context-modal" show on_cancel={JS.patch(~p"/apps/#{@app.id}/contexts")}>
+  <.live_component
+    module={PhireFlightWeb.ContextsLive.FormComponent}
+    id={@app_context.id || :new}
+    title={@page_title}
+    action={@live_action}
+    app_context={@app_context}
+    app={@app}
+    patch={~p"/apps/#{@app.id}/contexts"}
+  />
+</.modal>
+
